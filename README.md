@@ -47,3 +47,9 @@ and observations are supplied in the alert payload. No real resource is checked 
 ## Security
 
 No credentials or subscription IDs are stored in code. Real integrations would use environment variables or managed identity.
+
+## Live end-to-end demo (10 scenarios x 3 cases)
+
+Start `python mock_servicenow.py`, then `python demo_all_scenarios.py`.
+Each scenario runs through workflow + mock ServiceNow in three cases (awaiting, recovered, failed).
+Last run: 30 cases, 0 unexpected. Observations are simulated; remediation is dry-run.
