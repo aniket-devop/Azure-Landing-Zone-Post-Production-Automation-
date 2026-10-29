@@ -1,67 +1,63 @@
-<div align="center">
+# Azure Landing Zone Post-Production Automation
 
-# 🛡️ Azure Landing Zone Post-Production Automation
+### IYAV: Self-Healing Automation Proof of Concept
 
-### IYAV: a self-healing incident pipeline (proof of concept)
-
-**Monitor → Detect → Correlate → Diagnose → Remediate → Verify → ServiceNow Update**
-
-![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-mock%20ServiceNow-000000?logo=flask&logoColor=white)
-![pytest](https://img.shields.io/badge/tests-pytest-0A9EDC?logo=pytest&logoColor=white)
-![Azure Functions](https://img.shields.io/badge/Azure%20Functions-health%20stub-0062AD?logo=azurefunctions&logoColor=white)
-![Status](https://img.shields.io/badge/status-proof%20of%20concept-orange)
-[![CI](https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-/actions/workflows/ci.yml/badge.svg)](https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-/actions/workflows/ci.yml)
-![License](https://img.shields.io/badge/license-MIT-green)
-
-[**▶ Watch the demo**](docs/demo/azure_landing_zone_demo.mp4) · [**Quick start**](#-quick-start) · [**How it works**](#-how-it-works) · [**Scenarios**](#-supported-scenarios)
-
-<br>
-
-[![Watch the demo video](docs/demo/video-thumbnail.png)](docs/demo/azure_landing_zone_demo.mp4)
-
-</div>
+**Pipeline:** Monitor → Detect → Correlate → Diagnose → Remediate → Verify → ServiceNow Update
 
 > [!IMPORTANT]
-> **Honest scope:** this is a **local proof of concept**. It does not call real Azure or a real ServiceNow. Remediation is **dry-run only** (`resource_changed: false`), recovery observations are **simulated**, and ServiceNow is a **local Flask mock**.
+> **This is a local proof of concept (POC).** Nothing in this repository connects to a real Azure subscription or a real ServiceNow instance.
+> - Remediation is **dry-run only** (`resource_changed: false`).
+> - Recovery observations are **simulated** and are supplied in the alert payload.
+> - ServiceNow is replaced by a **local Flask mock**.
+>
+> There is no Terraform, Bicep, or CI/CD workflow in this repository.
 
 ---
 
-## 📌 Table of Contents
+## Table of Contents
 
-[Overview](#-overview) · [Highlights](#-highlights) · [How it works](#-how-it-works) · [Design decisions](#-key-design-decisions) · [Quick start](#-quick-start) · [Run](#-how-to-run) · [Scenarios](#-supported-scenarios) · [Configuration](#-configuration) · [Demo](#-demo-screenshots-and-video) · [Validation](#-validation-evidence) · [Security](#-security-considerations) · [Troubleshooting](#-troubleshooting) · [Limitations](#-limitations) · [Roadmap](#-roadmap) · [Author](#-author)
+1. [Overview](#1-overview)
+2. [Problem Statement and Objectives](#2-problem-statement-and-objectives)
+3. [Architecture and Workflow](#3-architecture-and-workflow)
+4. [Technologies Used](#4-technologies-used)
+5. [Repository Structure](#5-repository-structure)
+6. [Prerequisites](#6-prerequisites)
+7. [Installation and Configuration](#7-installation-and-configuration)
+8. [How to Run](#8-how-to-run)
+9. [Supported Scenarios](#9-supported-scenarios)
+10. [Configuration and Environment Variables](#10-configuration-and-environment-variables)
+11. [Demo: Screenshots and Video](#11-demo-screenshots-and-video)
+12. [Execution Results and Validation Evidence](#12-execution-results-and-validation-evidence)
+13. [Security Considerations](#13-security-considerations)
+14. [Troubleshooting](#14-troubleshooting)
+15. [Current Limitations](#15-current-limitations)
+16. [Future Improvements](#16-future-improvements)
+17. [Author and Acknowledgements](#17-author-and-acknowledgements)
 
 ---
 
-## 🔎 Overview
+## 1. Overview
 
-In post-production cloud operations, the same alert can fire repeatedly, tickets get duplicated, and tickets are sometimes closed before the real problem is fixed.
+IYAV simulates how a post-production operations process for an Azure Landing Zone could handle common incidents automatically. An alert comes in, the system validates it, groups repeat alerts under one correlation ID, diagnoses the cause, runs a (dry-run) remediation, checks whether the issue has actually cleared, and only then resolves the matching incident in a ServiceNow-style ticketing system.
 
-IYAV models a safer flow. An alert is validated, grouped under a **correlation ID**, diagnosed against a **rule table**, remediated in **dry-run mode**, and then **checked for recovery**. Only after recovery is verified does the ticket move to `Resolved`.
+The key design principle is that **an incident is never resolved on faith**. A ticket moves to `Resolved` only after recovery has been verified (or manually overridden). The mock ServiceNow API enforces this by returning HTTP `409` if someone tries to resolve without verified recovery.
 
-**Objectives**
+## 2. Problem Statement and Objectives
 
-- Validate alerts and derive a stable correlation ID (hash of resource + rule).
-- Diagnose alerts and pick an approved action from one central rule table.
+**Problem.** In post-production cloud operations, the same alert can fire repeatedly, tickets get duplicated, and tickets are sometimes closed before the underlying issue is truly fixed.
+
+**Objectives of this POC**
+
+- Validate incoming alerts and derive a stable correlation ID (hash of resource + rule).
+- Diagnose alerts and select an approved remediation action from a single rule table.
 - Verify recovery **before** resolving a ticket.
-- Prevent duplicate tickets by reusing an open incident with the same correlation ID.
+- Avoid duplicate tickets by reusing an open incident that has the same correlation ID.
 - Make adding a new scenario a one-entry change in `rules.py`.
+- Demonstrate the whole flow locally, with automated tests and a live dashboard.
 
-## ✨ Highlights
+## 3. Architecture and Workflow
 
-| | |
-|---|---|
-| 🔁 **End-to-end pipeline** | Seven stages from alert to ServiceNow update, visible live in the dashboard. |
-| ✅ **Verify-before-resolve** | The mock ServiceNow returns **HTTP 409** if you try to resolve without verified recovery. |
-| 🧩 **Rule-driven** | 10 scenarios defined in one generic rule table. Remediation, approved actions and recovery checks are all derived from it. |
-| 🎫 **Duplicate control** | Repeat alerts reuse the open incident; a Resolved one is not reused. |
-| 🧪 **Tested** | pytest suite in `tests/` that does not need the mock server. |
-| 📊 **Live dashboard** | Trigger *Alert / Recovered / Failed* per scenario and watch results and incidents update. |
-| ☁️ **Azure-aware** | Parser for the Azure Monitor Common Alert Schema (sample payloads only) and an Azure Functions `/health` stub. |
-
-## 🧠 How it works
-
-All components run locally. `self_healing_workflow.py` chains the alert engine, remediation engine and recovery verifier. `workflow_service.py` then talks to the mock ServiceNow over HTTP.
+All components run locally. The workflow core is `self_healing_workflow.py`, which chains the alert engine, remediation engine, and recovery verifier. `workflow_service.py` then talks to the mock ServiceNow over HTTP.
 
 ```mermaid
 flowchart TD
@@ -85,91 +81,168 @@ flowchart TD
     P --> N
 ```
 
+### How it works, step by step
+
 | Stage | What happens | Implemented in |
 |---|---|---|
-| **Monitor / Detect** | Alert payload is received and validated. | `alert_engine.py` |
-| **Correlate** | Correlation ID = hash of resource + alert rule. | `alert_engine.py` |
-| **Diagnose** | Rule lookup gives a diagnosis and an action. No action means `manual_investigation_required`. | `remediation_engine.py`, `rules.py` |
-| **Remediate** | Approved action runs in **dry-run only**. | `remediation_engine.py` |
-| **Verify** | (1) manual override, otherwise (2) verifier compares a simulated observation with the rule's check. | `recovery_verifier.py`, `self_healing_workflow.py` |
-| **ServiceNow update** | Create or reuse an incident; patch to `Resolved` only if recovery is verified. | `workflow_service.py`, `mock_servicenow.py` |
+| **Monitor / Detect** | An alert payload is received and validated. | `alert_engine.py` (`process_alert`) |
+| **Correlate** | A correlation ID is derived from a hash of the resource and the alert rule. Alerts for the same resource and rule share one ID. | `alert_engine.py` |
+| **Diagnose** | The alert rule is looked up in the rule table to produce a diagnosis and a remediation action. If no action applies, the workflow stops with `manual_investigation_required`. | `remediation_engine.py` (`diagnose_alert`), `rules.py` |
+| **Remediate** | The approved action is executed in **dry-run mode only**. No real resource is changed. | `remediation_engine.py` (`execute_remediation`) |
+| **Verify** | Recovery is decided in this order: (1) manual override `recovery_verified=True`; (2) otherwise the verifier compares a simulated post-remediation observation with the rule's check. | `recovery_verifier.py`, `self_healing_workflow.py` |
+| **ServiceNow update** | An incident is created, or the existing open one with the same correlation ID is reused. If recovery is verified, the incident is patched to `Resolved`. | `workflow_service.py`, `mock_servicenow.py` |
 
-**Workflow outcomes**
+### Possible workflow outcomes
 
-| `workflow_status` | Meaning | Incident |
+| `workflow_status` | Meaning | Incident state |
 |---|---|---|
-| `manual_investigation_required` | No automated action for this diagnosis. | `New` |
+| `manual_investigation_required` | Diagnosis produced no automated action. | `New` |
 | `awaiting_recovery_verification` | No observation available yet. | `New` |
-| `recovery_failed` | Observation shows the issue is still present. | Stays open |
+| `recovery_failed` | Observation shows the issue is still present. | Stays open (`New`) |
 | `recovery_verified` | Manual override or verified observation. | `Resolved` |
 
-**Other components:** `azure_alert_parser.py` parses the Azure Monitor Common Alert Schema (tested against sample payloads only). `function_app.py` is an Azure Functions app with one anonymous `GET /health` route returning `{"project": "IYAV", "status": "healthy", "mode": "foundation"}`; it is not yet connected to the workflow.
+### Azure Monitor alert parser
 
-## 🎯 Key design decisions
+`azure_alert_parser.py` parses the Azure Monitor **Common Alert Schema**. It has been tested **against sample payloads only**, not against live Azure.
 
-| Decision | Why |
+### Azure Function stub
+
+`function_app.py` defines an Azure Functions app with a single anonymous `GET /health` route that returns `{"project": "IYAV", "status": "healthy", "mode": "foundation"}`. It is a foundation stub and is **not yet connected to the workflow**.
+
+## 4. Technologies Used
+
+| Technology | Usage in this repo |
 |---|---|
-| Dry-run only remediation | Safe to demo and test. No real resource can be changed. |
-| Recovery verified before resolve | Prevents tickets being closed while the issue still exists. |
-| One central rule table | New scenarios need one entry, not new branching code. |
-| Correlation ID from resource + rule | Repeat alerts map to the same incident instead of creating duplicates. |
-| Mock ServiceNow enforces the rule too | The safety check holds at the API level as well, not just in the workflow. |
+| **Python** | Workflow, rules, engines, demos, dashboard (type hints such as `dict[str, Any]` imply Python 3.9+) |
+| **Flask** | Mock ServiceNow API and dashboard server |
+| **requests** | HTTP client used by `workflow_service.py` to call the mock ServiceNow |
+| **pytest** | Automated test suite in `tests/` |
+| **azure-functions** | Azure Functions Python library used by the `function_app.py` health stub |
+| **HTML** | Dashboard UI (`dashboard_page.html`) |
 
-## 🚀 Quick start
+The dependencies listed in `requirements.txt` are: `azure-functions`, `pytest`, `Flask`, `requests`.
 
-```powershell
+## 5. Repository Structure
+
+```text
+.
+├── README.md
+├── LICENSE
+├── requirements.txt
+├── .gitignore
+├── host.json                    # Azure Functions host configuration
+├── function_app.py              # Azure Functions app: GET /health stub
+│
+├── rules.py                     # Rule table: one entry per scenario
+├── alert_engine.py              # Alert validation, correlation id
+├── azure_alert_parser.py        # Azure Monitor Common Alert Schema parser
+├── alert_processor.py           <!-- TODO: confirm purpose and update this comment -->
+├── remediation_engine.py        # Diagnosis and dry-run remediation
+├── recovery_verifier.py         # Post-remediation recovery check
+├── self_healing_workflow.py     # Orchestrates the workflow
+├── workflow_service.py          # Calls mock ServiceNow (create / resolve incident)
+├── mock_servicenow.py           # Local Flask mock of ServiceNow
+│
+├── demo_workflow.py             # Demo against the mock server
+├── demo_all_scenarios.py        # 10 scenarios x 3 cases end-to-end demo
+├── dashboard.py                 # Live dashboard server (port 8080)
+├── dashboard_page.html          # Dashboard UI
+│
+├── tests/                       # pytest suite
+└── docs/
+    ├── demo/                    # Demo video and thumbnail
+    └── screenshots/             # Dashboard screenshots
+```
+
+## 6. Prerequisites
+
+- **Python 3.9 or newer** (the version is not pinned in the repository)
+- **pip**
+- **Git**
+- A modern web browser for the dashboard
+
+**Azure setup:** none required. This POC does not call Azure. An Azure subscription, Azure CLI, or credentials are **not** needed to run anything below.
+
+**Optional:** [Azure Functions Core Tools](https://learn.microsoft.com/azure/azure-functions/functions-run-local) if you want to run the `/health` stub locally with `func start`.
+
+## 7. Installation and Configuration
+
+```bash
+# 1. Clone the repository
 git clone https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-.git
 cd Azure-Landing-Zone-Post-Production-Automation-
 
+# 2. Create and activate a virtual environment
 python -m venv .venv
-.venv\Scripts\Activate.ps1          # macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
 
-python -m pytest -q                 # run the tests
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+# macOS / Linux
+source .venv/bin/activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
 ```
 
-**Requirements:** Python 3.9+ (inferred from type hints; not pinned in the repo), pip, Git, a web browser. **No Azure subscription or credentials are needed.**
+No secrets or `.env` file are needed. See [Configuration](#10-configuration-and-environment-variables).
 
-## ▶️ How to run
+## 8. How to Run
 
-**Tests** (no mock server needed)
+### 8.1 Run the automated tests
+
+The tests **do not** need the mock server.
 
 ```bash
 python -m pytest -q
 ```
 
-**Command-line demos** (use two terminals)
+### 8.2 Run the command-line demos
+
+Each demo needs the mock ServiceNow running, so use **two terminals**.
+
+**Terminal 1: start mock ServiceNow (port 8090)**
 
 ```bash
-# Terminal 1
-python mock_servicenow.py            # mock ServiceNow on port 8090
-
-# Terminal 2
-python demo_workflow.py              # single workflow demo
-python demo_all_scenarios.py         # 10 scenarios x 3 cases
-```
-
-**Live dashboard**
-
-```bash
-# Terminal 1
 python mock_servicenow.py
-# Terminal 2
-python dashboard.py
 ```
 
-Open <http://127.0.0.1:8080>. Pick a scenario and instance, then trigger **Alert**, **Recovered** or **Failed**, or click **Run auto demo**. The same scenario + instance twice reuses the open incident; **Recovered** resolves it.
+**Terminal 2: run a demo**
 
-**Optional: Azure Function health stub** (needs Azure Functions Core Tools)
+```bash
+# Single-workflow demo
+python demo_workflow.py
+
+# All 10 scenarios x 3 cases (awaiting, recovered, failed)
+python demo_all_scenarios.py
+```
+
+### 8.3 Run the live dashboard
+
+**Terminal 1:** `python mock_servicenow.py`
+**Terminal 2:** `python dashboard.py`
+
+Then open <http://127.0.0.1:8080>.
+
+In the dashboard you can:
+
+1. Pick a **scenario** and enter an **instance** name.
+2. Trigger **Alert**, **Recovered**, or **Failed**.
+3. Optionally click **Run auto demo** to run through all scenarios.
+4. Watch the **pipeline** stages, the **workflow results** table, and the **live mock ServiceNow incidents**.
+
+Expected behavior: the same scenario + instance triggered twice **reuses the open incident** (deduplication); **Recovered** resolves it; **Failed** leaves it open.
+
+### 8.4 (Optional) Run the Azure Function health stub
 
 ```bash
 func start
-# curl http://localhost:7071/api/health   <!-- TODO: confirm route against host.json -->
+# then call the health route; the default route prefix is /api
+# curl http://localhost:7071/api/health   <!-- TODO: confirm against host.json -->
 ```
 
-## 🧪 Supported scenarios
+## 9. Supported Scenarios
 
-All 10 scenarios are **simulated**. Observation fields are invented for this POC (not real Azure metric names) and are supplied in the alert payload.
+There are **10 scenarios**, all **simulated**. "Simulated" means the observation fields are invented for this POC (they are **not** real Azure metric names) and the observations are supplied in the alert payload. No real resource is checked or changed.
 
 | # | Scenario | Rule | Recovery check | Status |
 |---|---|---|---|---|
@@ -184,134 +257,122 @@ All 10 scenarios are **simulated**. Observation fields are invented for this POC
 | 9 | High CPU | `High-CPU-Utilization` | `cpu_percent <= 80` | Simulated, workflow tests only |
 | 10 | Service Stopped | `Service-Stopped` | `service_status == Running` | Simulated, workflow tests only |
 
-## ⚙️ Configuration
+**Adding a scenario:** remediation, approved actions, and recovery checks are all derived from the generic rule table in `rules.py`, so adding a scenario means adding one entry there.
 
-The current code does **not** read environment variables. Settings are constants:
+## 10. Configuration and Environment Variables
+
+The current code **does not read any environment variables**. Settings are constants or defaults:
 
 | Setting | Value | Where |
 |---|---|---|
-| Mock ServiceNow URL | `http://127.0.0.1:8090` | `SERVICENOW_URL` in `workflow_service.py` |
+| Mock ServiceNow base URL | `http://127.0.0.1:8090` | `SERVICENOW_URL` constant in `workflow_service.py` |
 | Dashboard address | `http://127.0.0.1:8080` | `dashboard.py` |
-| HTTP timeout to mock | 5 seconds | `workflow_service.py` |
+| HTTP timeout to mock ServiceNow | 5 seconds | `workflow_service.py` |
 
-No secrets or `.env` file are required.
+To point the workflow at a different mock server, edit `SERVICENOW_URL` in `workflow_service.py`.
 
-## 🖼️ Demo: screenshots and video
+> Real integrations (Azure, ServiceNow) are not implemented. If you add them later, read credentials from environment variables or use managed identity, and never commit them. See [Security Considerations](#13-security-considerations).
+
+## 11. Demo: Screenshots and Video
+
+### Video demonstration
+
+A screen recording of the live dashboard is included in this repository.
 
 [![Watch the demo video](docs/demo/video-thumbnail.png)](docs/demo/azure_landing_zone_demo.mp4)
 
-- In-repo video: [`docs/demo/azure_landing_zone_demo.mp4`](docs/demo/azure_landing_zone_demo.mp4)
-- Hosted version (optional): `<ADD YOUTUBE / DRIVE URL HERE>`
+- **In-repo video:** [`docs/demo/azure_landing_zone_demo.mp4`](docs/demo/azure_landing_zone_demo.mp4)
+- **Hosted version (optional):** `<ADD YOUTUBE / DRIVE / RELEASE URL HERE>`
 
-**Completed run.** A simulated *Service-Stopped* alert goes through all seven stages. Remediation is shown as `restart_service (dry-run)` and the incident ends `Resolved` with `recovery_verified`.
+### Screenshots
 
-![Dashboard with completed pipeline](docs/screenshots/01-dashboard-pipeline-resolved.png)
+Both screenshots are taken from the demo recording and show the dashboard at `http://127.0.0.1:8080`.
 
-**Awaiting verification.** A simulated *Disk-Space-Low* alert with no recovery reported yet stays `New` with status `awaiting_recovery_verification`.
+| Screenshot | Description |
+|---|---|
+| ![Dashboard with completed pipeline](docs/screenshots/01-dashboard-pipeline-resolved.png) | A simulated **Service-Stopped** run: all seven pipeline stages complete, the remediation is shown as `restart_service (dry-run)`, and the incident ends as **Resolved** with `recovery_verified`. |
+| ![Dashboard awaiting verification](docs/screenshots/02-dashboard-awaiting-verification.png) | A simulated **Disk-Space-Low** alert for which recovery has not yet been reported: status `awaiting_recovery_verification`, incident state **New**. |
 
-![Dashboard awaiting verification](docs/screenshots/02-dashboard-awaiting-verification.png)
+## 12. Execution Results and Validation Evidence
 
-## ✅ Validation evidence
+### What the project claims is verified
 
-**What the project verifies:** alert validation, correlation ID, diagnosis and dry-run remediation; the four recovery paths (verified, failed, no observation, manual override); duplicate-ticket control; the HTTP 409 guard in the mock ServiceNow; and the Azure Monitor schema parser against sample payloads.
+- Alert validation, correlation ID generation, diagnosis, and dry-run remediation.
+- Recovery verification before resolve, covering four paths: verified (Resolved), failed (incident stays New), no observation (awaiting verification), and manual override.
+- Duplicate-ticket control: an open incident with the same correlation ID is reused; a Resolved one is not.
+- The mock ServiceNow refuses to Resolve without verified recovery (HTTP `409`).
+- Azure Monitor Common Alert Schema parsing, against sample payloads only.
 
-**Author-reported results** (from the project's earlier README, not re-executed when writing this one):
+### Author-reported results
 
 | Check | Reported result |
 |---|---|
 | `python -m pytest -q` | 92 passed at last run |
 | `python demo_all_scenarios.py` | 30 cases (10 scenarios × 3 cases), 0 unexpected |
 
-<details>
-<summary><b>Paste your latest terminal output here</b></summary>
+> These figures were reported by the author and were **not re-executed while preparing this README**.
 
-```text
-<PASTE OUTPUT OF: python -m pytest -q>
-<PASTE OUTPUT OF: python demo_all_scenarios.py>
-```
+### Not covered by automated tests
 
-</details>
+- The dashboard has **no automated test yet**; it is demonstrated through the video and screenshots above.
 
-The dashboard has no automated test yet. It is demonstrated through the video and screenshots above.
+## 13. Security Considerations
 
-## 🔐 Security considerations
+- No credentials or subscription IDs are stored in the code.
+- Remediation is dry-run only, so no real resource can be modified by this POC.
+- Recovery cannot be marked verified without either an observation or an explicit manual override, and the mock ServiceNow rejects resolving without verified recovery.
+- The Azure Function stub uses `AuthLevel.ANONYMOUS`. This is acceptable for a local health stub only. **Do not deploy it publicly without reviewing the auth level.**
+- The mock ServiceNow and dashboard are intended for local use (`127.0.0.1`) and have no authentication.
+- Before any real integration: use environment variables or managed identity, keep secrets out of Git, and apply least-privilege roles to any remediation identity.
 
-- No credentials or subscription IDs are stored in code.
-- Remediation is dry-run only, so no real resource can be modified.
-- Recovery cannot be marked verified without an observation or an explicit manual override, and the mock API rejects resolving without it.
-- The Azure Function stub uses `AuthLevel.ANONYMOUS`. That is fine for a local stub. Review it before any public deployment.
-- The mock ServiceNow and dashboard are for local use (`127.0.0.1`) and have no authentication.
-- For real integrations: use environment variables or managed identity, apply least-privilege roles, and keep secrets out of Git.
+## 14. Troubleshooting
 
-## 🛠️ Troubleshooting
-
-| Symptom | Likely cause | Fix |
+| Symptom | Likely cause | What to do |
 |---|---|---|
-| Connection refused on `127.0.0.1:8090` | Mock ServiceNow not running | Start `python mock_servicenow.py` first. |
-| Dashboard lacks "Mock ServiceNow connected" | Same as above | Start the mock, then refresh the page. |
-| `Address already in use` | Port 8080 or 8090 taken | Stop the other process or change the port. |
-| `ModuleNotFoundError` | venv inactive or deps missing | Activate venv, run `pip install -r requirements.txt`. |
-| PowerShell blocks `Activate.ps1` | Execution policy | `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned` |
-| HTTP 409 on resolve | Recovery not verified | Expected. Send a recovered observation or use the override. |
-| Second alert creates no new ticket | Deduplication | Expected. The open incident is reused. |
-| Incident stays `New` after "Failed" | Recovery check failed | Expected. Failed recovery leaves it open. |
+| `ConnectionError` / connection refused on `127.0.0.1:8090` | Mock ServiceNow is not running | Start `python mock_servicenow.py` first, in its own terminal. |
+| Dashboard does not show "Mock ServiceNow connected" | Same as above | Start the mock server, then refresh `http://127.0.0.1:8080`. |
+| `Address already in use` | Port 8080 or 8090 is taken | Stop the other process, or change the port in the relevant script. |
+| `ModuleNotFoundError` | Dependencies not installed or venv not active | Activate the venv and run `pip install -r requirements.txt`. |
+| PowerShell blocks `Activate.ps1` | Execution policy | Run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`, then activate again. |
+| HTTP `409` when resolving an incident | Recovery was not verified | Expected behavior. Send a recovered observation, or use the manual override. |
+| A second alert does not create a new ticket | Deduplication | Expected. An open incident with the same correlation ID is reused. |
+| Incident stays `New` after a "Failed" run | Recovery check failed | Expected. Failed recovery leaves the incident open. |
+| Tests fail unexpectedly | Environment mismatch | Confirm Python 3.9+ and a fresh `pip install -r requirements.txt`. The tests do not need the mock server. |
 
-## ⚠️ Limitations
+## 15. Current Limitations
 
-Not implemented: real Azure integrations (Monitor, Log Analytics, Resource Graph, Policy, Logic Apps, Functions deployment), a real ServiceNow, real remediation and real recovery observations (a provider hook exists, only the simulated one is implemented), work notes and an In-Progress state on failed recovery, SLA timers and real escalation, Terraform/Bicep, and a dashboard test.
+**Not implemented:**
 
-## 🗺️ Roadmap
+- Real Azure: Monitor, Log Analytics, Resource Graph, Policy, Logic Apps, and Functions deployment.
+- Real ServiceNow (a local Flask mock is used instead).
+- Real remediation and real recovery observations. A provider hook exists, but only the simulated provider is implemented.
+- Work notes and an In-Progress state on failed recovery.
+- SLA timers and real escalation. The SLA scenario only checks a simulated percentage.
+- Terraform / Bicep infrastructure code and CI/CD workflows.
+- An automated test for the dashboard.
 
-- [ ] Replace the simulated observation provider with real Azure Monitor / Log Analytics queries.
-- [ ] Feed live Common Alert Schema payloads into the workflow through the Azure Function.
-- [ ] Integrate a real ServiceNow instance with work notes and an In-Progress state.
-- [ ] Add real remediation actions behind an approval gate, using managed identity.
-- [ ] Move hardcoded settings into environment variables.
-- [ ] Add dashboard tests.
-- [ ] Add Bicep or Terraform to deploy the Function and supporting resources.
+## 16. Future Improvements
 
-## 📁 Repository structure
+Ideas that follow naturally from the current design (none of these are implemented):
 
-```text
-.
-├── .github/workflows/ci.yml     # Runs pytest on push and pull request
-├── docs/
-│   ├── demo/                    # Demo video and thumbnail
-│   └── screenshots/             # Dashboard screenshots
-├── tests/                       # pytest suite
-├── rules.py                     # Rule table: one entry per scenario
-├── alert_engine.py              # Alert validation, correlation id
-├── azure_alert_parser.py        # Azure Monitor Common Alert Schema parser
-├── alert_processor.py           <!-- TODO: confirm purpose -->
-├── remediation_engine.py        # Diagnosis and dry-run remediation
-├── recovery_verifier.py         # Post-remediation recovery check
-├── self_healing_workflow.py     # Orchestrates the workflow
-├── workflow_service.py          # Create / resolve incidents in mock ServiceNow
-├── mock_servicenow.py           # Local Flask mock of ServiceNow
-├── demo_workflow.py             # Single-workflow demo
-├── demo_all_scenarios.py        # 10 scenarios x 3 cases demo
-├── dashboard.py                 # Live dashboard server (port 8080)
-├── dashboard_page.html          # Dashboard UI
-├── function_app.py              # Azure Functions GET /health stub
-├── host.json                    # Azure Functions host configuration
-├── requirements.txt             # azure-functions, pytest, Flask, requests
-└── LICENSE
-```
+- Replace the simulated observation provider with real Azure Monitor / Log Analytics queries through the existing provider hook.
+- Feed live Azure Monitor Common Alert Schema payloads into the workflow via the Azure Function.
+- Integrate with a real ServiceNow instance, including work notes and an In-Progress state on failed recovery.
+- Add real remediation actions behind an approval gate, authenticated with managed identity.
+- Move hardcoded settings (such as `SERVICENOW_URL`) into environment variables.
+- Add tests for the dashboard and a GitHub Actions workflow that runs `pytest` on every push.
+- Add Infrastructure as Code (Bicep or Terraform) for deploying the Function and supporting resources.
 
-## 👤 Author
+## 17. Author and Acknowledgements
 
-**Aniket Kumar** · [@aniket-devop](https://github.com/aniket-devop)
+👤 **Author**
+**Aniket Kumar** · [GitHub](https://github.com/aniket-devop) · [LinkedIn](https://linkedin.com/in/aniket484)
 
-- LinkedIn: `<ADD URL>`
-- Email: `<ADD EMAIL>`
-- Acknowledgements: `<ADD MENTORS / COURSE / TOOLS TO CREDIT>`
+* Email: [aniketkmr484@gmail.com](mailto:aniketkmr484@gmail.com)
+* Acknowledgements: Thanks to the mentors, learning resources, and open-source tools that supported this project.
 
-Licensed under the [MIT License](LICENSE).
+📄 Licensed under the [MIT License](https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-/blob/main/LICENSE).
 
 ---
 
-<div align="center">
-
-*A local proof of concept. All observations are simulated and no real Azure or ServiceNow resources are accessed or modified.*
-
-</div>
+*This README describes a local proof of concept. All observations are simulated, and no real Azure or ServiceNow resources are accessed or modified.*
