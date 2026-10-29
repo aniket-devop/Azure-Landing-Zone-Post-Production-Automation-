@@ -1,12 +1,9 @@
+﻿from typing import Any
 
-from typing import Any
+from rules import RULES
 
 
-APPROVED_ACTIONS = {
-    "clear_temp_files",
-    "restart_app",
-    "retry_backup",
-}
+APPROVED_ACTIONS = {rule["action"] for rule in RULES.values()}
 
 
 class RemediationError(ValueError):
@@ -16,17 +13,9 @@ class RemediationError(ValueError):
 def diagnose_alert(alert: dict[str, Any]) -> dict[str, str]:
     """Map a known alert rule to an approved remediation action."""
 
-    rule = alert.get("alert_rule")
+    rule = RULES.get(alert.get("alert_rule"))
 
-    action_by_rule = {
-        "Disk-Space-Low": "clear_temp_files",
-        "Application-Health-Failure": "restart_app",
-        "Backup-Job-Failure": "retry_backup",
-    }
-
-    action = action_by_rule.get(rule)
-
-    if action is None:
+    if rule is None:
         return {
             "diagnosis": "manual_investigation_required",
             "action": "none",
@@ -34,7 +23,7 @@ def diagnose_alert(alert: dict[str, Any]) -> dict[str, str]:
 
     return {
         "diagnosis": "known_issue",
-        "action": action,
+        "action": rule["action"],
     }
 
 

@@ -7,27 +7,15 @@ labelled source="simulated" until a real Azure provider is added.
 """
 from typing import Any, Callable, Dict, Optional
 
+from rules import RULES
+
 
 class RecoveryVerificationError(Exception):
     """Raised when recovery cannot be verified for an unsupported alert rule."""
 
 
 RECOVERY_CHECKS: Dict[str, Dict[str, Any]] = {
-    "Disk-Space-Low": {
-        "check": "disk_free_percent",
-        "mode": "min",
-        "threshold": 20,
-    },
-    "Application-Health-Failure": {
-        "check": "app_health_status",
-        "mode": "equals",
-        "expected": "Healthy",
-    },
-    "Backup-Job-Failure": {
-        "check": "last_backup_status",
-        "mode": "equals",
-        "expected": "Succeeded",
-    },
+    name: rule["recovery"] for name, rule in RULES.items()
 }
 
 Provider = Callable[[Dict[str, Any], str], Optional[Any]]
@@ -68,6 +56,9 @@ def verify_recovery(
     if spec["mode"] == "min":
         result["threshold"] = spec["threshold"]
         result["recovered"] = observed >= spec["threshold"]
+    elif spec["mode"] == "max":
+        result["threshold"] = spec["threshold"]
+        result["recovered"] = observed <= spec["threshold"]
     else:
         result["expected"] = spec["expected"]
         result["recovered"] = observed == spec["expected"]
