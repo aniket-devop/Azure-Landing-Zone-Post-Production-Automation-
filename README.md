@@ -279,9 +279,9 @@ To point the workflow at a different mock server, edit `SERVICENOW_URL` in `work
 
 A screen recording of the live dashboard is included in this repository.
 
-[![Watch the demo video](docs/demo/video-thumbnail.png)](docs/demo/azure_landing_zone_demo.mp4)
+[![Watch the demo video](docs/demo/video-thumbnail.png)](https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-/raw/refs/heads/main/docs/demo/azure_landing_zone_demo.mp4)
 
-- **In-repo video:** [`docs/demo/azure_landing_zone_demo.mp4`](docs/demo/azure_landing_zone_demo.mp4)
+- **In-repo video:** [`docs/demo/azure_landing_zone_demo.mp4`](https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-/raw/refs/heads/main/docs/demo/azure_landing_zone_demo.mp4)
 - **Hosted version (optional):** `<ADD YOUTUBE / DRIVE / RELEASE URL HERE>`
 
 ### Screenshots
