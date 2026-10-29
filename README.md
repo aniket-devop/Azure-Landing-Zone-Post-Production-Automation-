@@ -1,404 +1,317 @@
 <div align="center">
 
-# Aniket Kumar
+# 🛡️ Azure Landing Zone Post-Production Automation
 
-### DevOps Engineer &nbsp;·&nbsp; Azure &nbsp;·&nbsp; Terraform &nbsp;·&nbsp; Kubernetes &nbsp;·&nbsp; CI/CD
+### IYAV: a self-healing incident pipeline (proof of concept)
 
-**I make infrastructure boring in the right way.**<br/>
-No manual clicks. No "it works on my machine." Everything reproducible, everything in code.
+**Monitor → Detect → Correlate → Diagnose → Remediate → Verify → ServiceNow Update**
 
-<br/>
+![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-mock%20ServiceNow-000000?logo=flask&logoColor=white)
+![pytest](https://img.shields.io/badge/tests-pytest-0A9EDC?logo=pytest&logoColor=white)
+![Azure Functions](https://img.shields.io/badge/Azure%20Functions-health%20stub-0062AD?logo=azurefunctions&logoColor=white)
+![Status](https://img.shields.io/badge/status-proof%20of%20concept-orange)
+[![CI](https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-/actions/workflows/ci.yml/badge.svg)](https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-/actions/workflows/ci.yml)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-[![LinkedIn](https://img.shields.io/badge/LINKEDIN-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/aniket484)
-[![Email](https://img.shields.io/badge/EMAIL-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:aniketkmr484@gmail.com)
-[![Projects](https://img.shields.io/badge/FEATURED%20PROJECTS-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)](#-featured-projects)
-[![Open to work](https://img.shields.io/badge/OPEN%20TO%20WORK-22C55E?style=for-the-badge&logo=checkmarx&logoColor=white)](#-lets-talk)
+[**▶ Watch the demo**](docs/demo/azure_landing_zone_demo.mp4) · [**Quick start**](#-quick-start) · [**How it works**](#-how-it-works) · [**Scenarios**](#-supported-scenarios)
 
-<img src="https://komarev.com/ghpvc/?username=aniket-devop&label=Profile%20Views&color=0e75b6&style=flat" alt="profile views"/>
+<br>
 
-<br/>
-
-| 🧑‍💻 Experience | ☁️ Primary Cloud | 🏗️ IaC | ☸️ Orchestration | 📍 Location |
-|:---:|:---:|:---:|:---:|:---:|
-| **2 Years** | **Azure** | **Terraform** | **Kubernetes / AKS** | **Bengaluru, India** |
+[![Watch the demo video](docs/demo/video-thumbnail.png)](docs/demo/azure_landing_zone_demo.mp4)
 
 </div>
 
-<br/>
-
-## ⚡ Skills
-
-<table>
-<tr>
-<td width="170"><b>☁️ Cloud & IaC</b></td>
-<td><img src="https://skillicons.dev/icons?i=azure,aws,terraform" alt="Cloud and IaC"/></td>
-</tr>
-<tr>
-<td><b>📦 Containers & GitOps</b></td>
-<td>
-<img src="https://skillicons.dev/icons?i=docker,kubernetes" alt="Containers"/>
-<img src="https://img.shields.io/badge/Helm-0F1689?style=for-the-badge&logo=helm&logoColor=white" alt="Helm" align="top"/>
-<img src="https://img.shields.io/badge/ArgoCD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white" alt="ArgoCD" align="top"/>
-</td>
-</tr>
-<tr>
-<td><b>🚀 CI/CD & Security</b></td>
-<td>
-<img src="https://skillicons.dev/icons?i=githubactions,git,github" alt="CI/CD"/>
-<img src="https://img.shields.io/badge/Azure_DevOps-0078D7?style=for-the-badge&logo=azuredevops&logoColor=white" alt="Azure DevOps" align="top"/>
-<img src="https://img.shields.io/badge/Trivy-1904DA?style=for-the-badge&logo=aqua&logoColor=white" alt="Trivy" align="top"/>
-</td>
-</tr>
-<tr>
-<td><b>📊 Monitoring</b></td>
-<td><img src="https://skillicons.dev/icons?i=prometheus,grafana" alt="Monitoring"/></td>
-</tr>
-<tr>
-<td><b>💻 Languages & OS</b></td>
-<td><img src="https://skillicons.dev/icons?i=python,bash,linux,fastapi,react,postgres" alt="Languages"/></td>
-</tr>
-</table>
-
-<sub>🔐 IaC security scanning: TFLint · TFSec · Checkov &nbsp;|&nbsp; ☁️ Azure is my primary cloud; AWS is hands-on project experience.</sub>
-
-<br/>
-
-## 📊 GitHub at a Glance
-
-<div align="center">
-
-<img src="assets/stats.svg" alt="GitHub stats" width="100%"/>
-
-<br/><br/>
-
-<img src="https://streak-stats.demolab.com/?user=aniket-devop&hide_border=true&theme=dark&background=0D1117&ring=38BDF8&fire=22D3A6&currStreakLabel=38BDF8&sideLabels=9CC9FF&dates=6E8FB8" alt="GitHub streak"/>
-
-</div>
-
-<br/>
-
-## 🎬 Live Demo: a real AKS cluster, not a screenshot
-
-Most portfolios show you code. This one shows a **live AKS cluster serving real traffic**: 27 simulated industrial assets streaming telemetry every 5 seconds into a dashboard with 3D digital twins and real-time health scoring.
-
-https://github.com/aniket-devop/axion-cloud-infrastructure/raw/main/docs/demo/axion-deployment-demo.mp4
-
-**[→ Read the full write-up](#1-axion-intelligence-platform)** · Terraform · AKS · ACR · FastAPI · React · PostgreSQL · end-to-end on Azure
-
-<br/>
-
-## 👨‍💻 About Me
-
-I'm **Aniket Kumar**, a DevOps Engineer with **2 years of hands-on experience** in Azure infrastructure, Terraform, CI/CD automation, containerized deployments, Kubernetes, and DevSecOps.
-
-My day job is Azure and pipelines. My own time goes into projects I build to actually run, not just to demo, because I'd rather find out where a design breaks on my own dime than on a client's.
-
-- 🔧 DevOps Engineer @ **DevOps Insiders**
-- ☁️ Azure provisioning and automation with **Terraform**
-- ☸️ Containerized deployments with **Docker, Kubernetes, AKS, Helm**
-- 🚀 CI/CD with **GitHub Actions** and **Azure DevOps**
-- 🔐 DevSecOps and IaC security with **Trivy, TFLint, TFSec, Checkov**
-- 📊 Observability with **Prometheus and Grafana**
-- 🔄 GitOps with **ArgoCD** (personal projects)
-- 🌱 Hands-on **AWS** infrastructure project with Terraform
-- 🎓 BCA, Chandigarh Group of Colleges, Mohali
-
-<br/>
-
-## 💼 Experience
-
-**DevOps Engineer · DevOps Insiders**
-
-- Provision and manage Azure infrastructure with Terraform: resource groups, virtual networks, and Azure Kubernetes Service (AKS)
-- Build and maintain CI/CD pipelines in GitHub Actions and Azure DevOps Pipelines to automate build, test, and deployment
-- Containerize applications with Docker and deploy workloads to Kubernetes/AKS using Helm charts
-- Integrate security and IaC scanning into the delivery lifecycle (DevSecOps)
-- Set up monitoring and observability with Prometheus and Grafana
-- Troubleshoot pipeline, infrastructure, and deployment issues across environments
-- Work with developers and QA to keep release cycles smooth and reliable
-
-<br/>
-
-## 🏗️ Featured Projects
-
-| # | Project | What it does | Stack |
-|:-:|---|---|---|
-| 1 | **[Axion Intelligence Platform](#1-axion-intelligence-platform)** ⭐ | Industrial IoT telemetry platform, 27 simulated assets streaming live data, deployed end-to-end on AKS | Terraform, AKS, ACR, FastAPI, React, PostgreSQL |
-| 2 | [GitOps CI/CD Pipeline](#2-gitops-cicd-pipeline) | CI builds, scans and publishes an image; ArgoCD reconciles the cluster; rollback is a pure Git operation | GitHub Actions, Trivy, GHCR, Helm, ArgoCD, Kind |
-| 3 | [Azure Network Foundation](#3-azure-network-foundation) | Hub-and-spoke network: Firewall, Bastion, deny-by-default NSGs, RBAC-scoped Key Vault | Terraform, Azure Firewall, Bastion, Key Vault |
-| 4 | [AWS Landing Network](#4-aws-landing-network) | Multi-AZ VPC, ALB, private EC2, locked remote Terraform state | Terraform, VPC, ALB, IAM, S3, DynamoDB |
-| 5 | [Airflow Observability Pipeline](#5-airflow-observability-pipeline) | Airflow on LocalExecutor, instrumented StatsD → Prometheus → Grafana | Docker Compose, Airflow, PostgreSQL, Prometheus, Grafana |
-
-<br/>
+> [!IMPORTANT]
+> **Honest scope:** this is a **local proof of concept**. It does not call real Azure or a real ServiceNow. Remediation is **dry-run only** (`resource_changed: false`), recovery observations are **simulated**, and ServiceNow is a **local Flask mock**.
 
 ---
 
-## 1. Axion Intelligence Platform
+## 📌 Table of Contents
 
-[![Repo](https://img.shields.io/badge/REPO-axion--cloud--infrastructure-181717?style=for-the-badge&logo=github)](https://github.com/aniket-devop/axion-cloud-infrastructure)
+[Overview](#-overview) · [Highlights](#-highlights) · [How it works](#-how-it-works) · [Design decisions](#-key-design-decisions) · [Quick start](#-quick-start) · [Run](#-how-to-run) · [Scenarios](#-supported-scenarios) · [Configuration](#-configuration) · [Demo](#-demo-screenshots-and-video) · [Validation](#-validation-evidence) · [Security](#-security-considerations) · [Troubleshooting](#-troubleshooting) · [Limitations](#-limitations) · [Roadmap](#-roadmap) · [Author](#-author)
 
-![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)
-![Azure](https://img.shields.io/badge/AKS%20%2F%20ACR-0078D4?style=flat-square&logo=microsoftazure&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+---
 
-A production-style industrial IoT condition-monitoring platform. 27 simulated assets (pumps, motors, compressors) across five refinery sites stream temperature, vibration, and current readings every 5 seconds. Terraform provisions the Azure footprint, GitHub Actions builds and pushes images to ACR, and Kubernetes manifests roll the workloads onto AKS, with a live dashboard featuring 3D digital twins, trend charts, and real-time health scoring.
+## 🔎 Overview
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/aniket-devop/axion-cloud-infrastructure/main/docs/architecture.png" width="90%" alt="Axion architecture"/>
-<br/>
-<sub>Terraform → Azure footprint · GitHub Actions → ACR · Kubernetes manifests → AKS · LoadBalancer services → UI and API</sub>
-</div>
+In post-production cloud operations, the same alert can fire repeatedly, tickets get duplicated, and tickets are sometimes closed before the real problem is fixed.
 
-<details>
-<summary><b>⚙️ Key engineering decisions · 📚 honest scope · 🚀 roadmap</b></summary>
-<br/>
+IYAV models a safer flow. An alert is validated, grouped under a **correlation ID**, diagnosed against a **rule table**, remediated in **dry-run mode**, and then **checked for recovery**. Only after recovery is verified does the ticket move to `Resolved`.
 
-**Key decisions**
-- Split ingestion (write-heavy, latency-sensitive) and query (aggregation + health scoring) into separate services so each scales independently
-- Terraform `for_each` over an `environments` map: one module tree renders dev/staging/prod without duplicated root configs
-- Remote state bootstrapped in a separate `state-infrastructure/` stack, solving the chicken-and-egg backend problem cleanly
-- `admin_enabled = false` on ACR, forcing identity-based auth instead of shared admin credentials
-- Health scoring computed server-side (SQL/Python), keeping the dashboard a thin client with consistent logic across consumers
+**Objectives**
 
-**Honest scope**
-A portfolio build with intentional, documented gaps: database credentials are currently inline rather than in Key Vault-backed Secrets, storage uses `emptyDir` instead of a PersistentVolumeClaim, and there's no Ingress/TLS yet. These are listed openly in the repo's roadmap.
+- Validate alerts and derive a stable correlation ID (hash of resource + rule).
+- Diagnose alerts and pick an approved action from one central rule table.
+- Verify recovery **before** resolving a ticket.
+- Prevent duplicate tickets by reusing an open incident with the same correlation ID.
+- Make adding a new scenario a one-entry change in `rules.py`.
 
-**Run it**
-```bash
-cd terraform && terraform init && terraform apply
-kubectl apply -f k8s/
+## ✨ Highlights
+
+| | |
+|---|---|
+| 🔁 **End-to-end pipeline** | Seven stages from alert to ServiceNow update, visible live in the dashboard. |
+| ✅ **Verify-before-resolve** | The mock ServiceNow returns **HTTP 409** if you try to resolve without verified recovery. |
+| 🧩 **Rule-driven** | 10 scenarios defined in one generic rule table. Remediation, approved actions and recovery checks are all derived from it. |
+| 🎫 **Duplicate control** | Repeat alerts reuse the open incident; a Resolved one is not reused. |
+| 🧪 **Tested** | pytest suite in `tests/` that does not need the mock server. |
+| 📊 **Live dashboard** | Trigger *Alert / Recovered / Failed* per scenario and watch results and incidents update. |
+| ☁️ **Azure-aware** | Parser for the Azure Monitor Common Alert Schema (sample payloads only) and an Azure Functions `/health` stub. |
+
+## 🧠 How it works
+
+All components run locally. `self_healing_workflow.py` chains the alert engine, remediation engine and recovery verifier. `workflow_service.py` then talks to the mock ServiceNow over HTTP.
+
+```mermaid
+flowchart TD
+    A["Alert payload (simulated)"] --> B["alert_engine.process_alert<br/>validate and build correlation_id"]
+    B --> C["remediation_engine.diagnose_alert<br/>diagnosis and action from rules"]
+    C -->|"action = none"| M["workflow_status:<br/>manual_investigation_required"]
+    C -->|"action found"| D["execute_remediation<br/>dry_run = True"]
+    D --> E{"recovery_verified<br/>override passed?"}
+    E -->|"yes"| OK["recovery source: manual<br/>incident_state: Resolved"]
+    E -->|"no"| F["recovery_verifier.verify_recovery<br/>check observation"]
+    F -->|"no observation"| W["awaiting_recovery_verification<br/>incident stays New"]
+    F -->|"issue still present"| X["recovery_failed<br/>incident stays open"]
+    F -->|"issue gone"| OK2["recovery_verified<br/>incident_state: Resolved"]
+    OK --> S["workflow_service<br/>POST /api/incidents"]
+    OK2 --> S
+    W --> S
+    X --> S
+    S --> N["Mock ServiceNow (Flask, port 8090)<br/>reuse open incident with same correlation_id"]
+    OK --> P["PATCH /api/incidents/:number<br/>state: Resolved"]
+    OK2 --> P
+    P --> N
 ```
 
-**Roadmap**
-- Move database credentials to Kubernetes Secrets backed by Azure Key Vault
-- Replace `emptyDir` with a PersistentVolumeClaim on Azure Disk
-- Replace dual LoadBalancers with a single Ingress (NGINX + cert-manager) for TLS
-- Add HorizontalPodAutoscalers and resource requests/limits on all deployments
+| Stage | What happens | Implemented in |
+|---|---|---|
+| **Monitor / Detect** | Alert payload is received and validated. | `alert_engine.py` |
+| **Correlate** | Correlation ID = hash of resource + alert rule. | `alert_engine.py` |
+| **Diagnose** | Rule lookup gives a diagnosis and an action. No action means `manual_investigation_required`. | `remediation_engine.py`, `rules.py` |
+| **Remediate** | Approved action runs in **dry-run only**. | `remediation_engine.py` |
+| **Verify** | (1) manual override, otherwise (2) verifier compares a simulated observation with the rule's check. | `recovery_verifier.py`, `self_healing_workflow.py` |
+| **ServiceNow update** | Create or reuse an incident; patch to `Resolved` only if recovery is verified. | `workflow_service.py`, `mock_servicenow.py` |
+
+**Workflow outcomes**
+
+| `workflow_status` | Meaning | Incident |
+|---|---|---|
+| `manual_investigation_required` | No automated action for this diagnosis. | `New` |
+| `awaiting_recovery_verification` | No observation available yet. | `New` |
+| `recovery_failed` | Observation shows the issue is still present. | Stays open |
+| `recovery_verified` | Manual override or verified observation. | `Resolved` |
+
+**Other components:** `azure_alert_parser.py` parses the Azure Monitor Common Alert Schema (tested against sample payloads only). `function_app.py` is an Azure Functions app with one anonymous `GET /health` route returning `{"project": "IYAV", "status": "healthy", "mode": "foundation"}`; it is not yet connected to the workflow.
+
+## 🎯 Key design decisions
+
+| Decision | Why |
+|---|---|
+| Dry-run only remediation | Safe to demo and test. No real resource can be changed. |
+| Recovery verified before resolve | Prevents tickets being closed while the issue still exists. |
+| One central rule table | New scenarios need one entry, not new branching code. |
+| Correlation ID from resource + rule | Repeat alerts map to the same incident instead of creating duplicates. |
+| Mock ServiceNow enforces the rule too | The safety check holds at the API level as well, not just in the workflow. |
+
+## 🚀 Quick start
+
+```powershell
+git clone https://github.com/aniket-devop/Azure-Landing-Zone-Post-Production-Automation-.git
+cd Azure-Landing-Zone-Post-Production-Automation-
+
+python -m venv .venv
+.venv\Scripts\Activate.ps1          # macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+
+python -m pytest -q                 # run the tests
+```
+
+**Requirements:** Python 3.9+ (inferred from type hints; not pinned in the repo), pip, Git, a web browser. **No Azure subscription or credentials are needed.**
+
+## ▶️ How to run
+
+**Tests** (no mock server needed)
+
+```bash
+python -m pytest -q
+```
+
+**Command-line demos** (use two terminals)
+
+```bash
+# Terminal 1
+python mock_servicenow.py            # mock ServiceNow on port 8090
+
+# Terminal 2
+python demo_workflow.py              # single workflow demo
+python demo_all_scenarios.py         # 10 scenarios x 3 cases
+```
+
+**Live dashboard**
+
+```bash
+# Terminal 1
+python mock_servicenow.py
+# Terminal 2
+python dashboard.py
+```
+
+Open <http://127.0.0.1:8080>. Pick a scenario and instance, then trigger **Alert**, **Recovered** or **Failed**, or click **Run auto demo**. The same scenario + instance twice reuses the open incident; **Recovered** resolves it.
+
+**Optional: Azure Function health stub** (needs Azure Functions Core Tools)
+
+```bash
+func start
+# curl http://localhost:7071/api/health   <!-- TODO: confirm route against host.json -->
+```
+
+## 🧪 Supported scenarios
+
+All 10 scenarios are **simulated**. Observation fields are invented for this POC (not real Azure metric names) and are supplied in the alert payload.
+
+| # | Scenario | Rule | Recovery check | Status |
+|---|---|---|---|---|
+| 1 | Disk & Capacity | `Disk-Space-Low` | `disk_free_percent >= 20` | Simulated, in live demo |
+| 2 | Application Health | `Application-Health-Failure` | `app_health_status == Healthy` | Simulated |
+| 3 | Backup Monitoring | `Backup-Job-Failure` | `last_backup_status == Succeeded` | Simulated |
+| 4 | VM Health | `VM-Heartbeat-Lost` | `heartbeat_status == Healthy` | Simulated, workflow tests only |
+| 5 | Policy Compliance | `Policy-Tag-Noncompliant` | `compliance_state == Compliant` | Simulated, workflow tests only |
+| 6 | Certificate Expiry | `Certificate-Expiring` | `cert_days_to_expiry >= 30` | Simulated, workflow tests only |
+| 7 | Network Issues | `Network-DNS-Failure` | `dns_resolution_status == Resolved` | Simulated, workflow tests only |
+| 8 | SLA Management | `SLA-Breach-Risk` | `sla_remaining_percent >= 25` | Simulated, workflow tests only |
+| 9 | High CPU | `High-CPU-Utilization` | `cpu_percent <= 80` | Simulated, workflow tests only |
+| 10 | Service Stopped | `Service-Stopped` | `service_status == Running` | Simulated, workflow tests only |
+
+## ⚙️ Configuration
+
+The current code does **not** read environment variables. Settings are constants:
+
+| Setting | Value | Where |
+|---|---|---|
+| Mock ServiceNow URL | `http://127.0.0.1:8090` | `SERVICENOW_URL` in `workflow_service.py` |
+| Dashboard address | `http://127.0.0.1:8080` | `dashboard.py` |
+| HTTP timeout to mock | 5 seconds | `workflow_service.py` |
+
+No secrets or `.env` file are required.
+
+## 🖼️ Demo: screenshots and video
+
+[![Watch the demo video](docs/demo/video-thumbnail.png)](docs/demo/azure_landing_zone_demo.mp4)
+
+- In-repo video: [`docs/demo/azure_landing_zone_demo.mp4`](docs/demo/azure_landing_zone_demo.mp4)
+- Hosted version (optional): `<ADD YOUTUBE / DRIVE URL HERE>`
+
+**Completed run.** A simulated *Service-Stopped* alert goes through all seven stages. Remediation is shown as `restart_service (dry-run)` and the incident ends `Resolved` with `recovery_verified`.
+
+![Dashboard with completed pipeline](docs/screenshots/01-dashboard-pipeline-resolved.png)
+
+**Awaiting verification.** A simulated *Disk-Space-Low* alert with no recovery reported yet stays `New` with status `awaiting_recovery_verification`.
+
+![Dashboard awaiting verification](docs/screenshots/02-dashboard-awaiting-verification.png)
+
+## ✅ Validation evidence
+
+**What the project verifies:** alert validation, correlation ID, diagnosis and dry-run remediation; the four recovery paths (verified, failed, no observation, manual override); duplicate-ticket control; the HTTP 409 guard in the mock ServiceNow; and the Azure Monitor schema parser against sample payloads.
+
+**Author-reported results** (from the project's earlier README, not re-executed when writing this one):
+
+| Check | Reported result |
+|---|---|
+| `python -m pytest -q` | 92 passed at last run |
+| `python demo_all_scenarios.py` | 30 cases (10 scenarios × 3 cases), 0 unexpected |
+
+<details>
+<summary><b>Paste your latest terminal output here</b></summary>
+
+```text
+<PASTE OUTPUT OF: python -m pytest -q>
+<PASTE OUTPUT OF: python demo_all_scenarios.py>
+```
 
 </details>
 
-<br/>
+The dashboard has no automated test yet. It is demonstrated through the video and screenshots above.
+
+## 🔐 Security considerations
+
+- No credentials or subscription IDs are stored in code.
+- Remediation is dry-run only, so no real resource can be modified.
+- Recovery cannot be marked verified without an observation or an explicit manual override, and the mock API rejects resolving without it.
+- The Azure Function stub uses `AuthLevel.ANONYMOUS`. That is fine for a local stub. Review it before any public deployment.
+- The mock ServiceNow and dashboard are for local use (`127.0.0.1`) and have no authentication.
+- For real integrations: use environment variables or managed identity, apply least-privilege roles, and keep secrets out of Git.
+
+## 🛠️ Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| Connection refused on `127.0.0.1:8090` | Mock ServiceNow not running | Start `python mock_servicenow.py` first. |
+| Dashboard lacks "Mock ServiceNow connected" | Same as above | Start the mock, then refresh the page. |
+| `Address already in use` | Port 8080 or 8090 taken | Stop the other process or change the port. |
+| `ModuleNotFoundError` | venv inactive or deps missing | Activate venv, run `pip install -r requirements.txt`. |
+| PowerShell blocks `Activate.ps1` | Execution policy | `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned` |
+| HTTP 409 on resolve | Recovery not verified | Expected. Send a recovered observation or use the override. |
+| Second alert creates no new ticket | Deduplication | Expected. The open incident is reused. |
+| Incident stays `New` after "Failed" | Recovery check failed | Expected. Failed recovery leaves it open. |
+
+## ⚠️ Limitations
+
+Not implemented: real Azure integrations (Monitor, Log Analytics, Resource Graph, Policy, Logic Apps, Functions deployment), a real ServiceNow, real remediation and real recovery observations (a provider hook exists, only the simulated one is implemented), work notes and an In-Progress state on failed recovery, SLA timers and real escalation, Terraform/Bicep, and a dashboard test.
+
+## 🗺️ Roadmap
+
+- [ ] Replace the simulated observation provider with real Azure Monitor / Log Analytics queries.
+- [ ] Feed live Common Alert Schema payloads into the workflow through the Azure Function.
+- [ ] Integrate a real ServiceNow instance with work notes and an In-Progress state.
+- [ ] Add real remediation actions behind an approval gate, using managed identity.
+- [ ] Move hardcoded settings into environment variables.
+- [ ] Add dashboard tests.
+- [ ] Add Bicep or Terraform to deploy the Function and supporting resources.
+
+## 📁 Repository structure
+
+```text
+.
+├── .github/workflows/ci.yml     # Runs pytest on push and pull request
+├── docs/
+│   ├── demo/                    # Demo video and thumbnail
+│   └── screenshots/             # Dashboard screenshots
+├── tests/                       # pytest suite
+├── rules.py                     # Rule table: one entry per scenario
+├── alert_engine.py              # Alert validation, correlation id
+├── azure_alert_parser.py        # Azure Monitor Common Alert Schema parser
+├── alert_processor.py           <!-- TODO: confirm purpose -->
+├── remediation_engine.py        # Diagnosis and dry-run remediation
+├── recovery_verifier.py         # Post-remediation recovery check
+├── self_healing_workflow.py     # Orchestrates the workflow
+├── workflow_service.py          # Create / resolve incidents in mock ServiceNow
+├── mock_servicenow.py           # Local Flask mock of ServiceNow
+├── demo_workflow.py             # Single-workflow demo
+├── demo_all_scenarios.py        # 10 scenarios x 3 cases demo
+├── dashboard.py                 # Live dashboard server (port 8080)
+├── dashboard_page.html          # Dashboard UI
+├── function_app.py              # Azure Functions GET /health stub
+├── host.json                    # Azure Functions host configuration
+├── requirements.txt             # azure-functions, pytest, Flask, requests
+└── LICENSE
+```
+
+## 👤 Author
+
+**Aniket Kumar** · [@aniket-devop](https://github.com/aniket-devop)
+
+- LinkedIn: `<ADD URL>`
+- Email: `<ADD EMAIL>`
+- Acknowledgements: `<ADD MENTORS / COURSE / TOOLS TO CREDIT>`
+
+Licensed under the [MIT License](LICENSE).
 
 ---
 
-## 2. GitOps CI/CD Pipeline
-
-[![App repo](https://img.shields.io/badge/APP-gitops--ci--pipeline-181717?style=for-the-badge&logo=github)](https://github.com/aniket-devop/gitops-ci-pipeline)
-[![GitOps repo](https://img.shields.io/badge/GITOPS-gitops--kubernetes--config-181717?style=for-the-badge&logo=github)](https://github.com/aniket-devop/gitops-kubernetes-config)
-
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
-![Trivy](https://img.shields.io/badge/Trivy-1904DA?style=flat-square&logo=aqua&logoColor=white)
-![Helm](https://img.shields.io/badge/Helm-0F1689?style=flat-square&logo=helm&logoColor=white)
-![ArgoCD](https://img.shields.io/badge/ArgoCD-EF7B4D?style=flat-square&logo=argo&logoColor=white)
-
-A two-repository GitOps setup: one repo owns the FastAPI app and its CI pipeline, the other owns the desired Kubernetes state that ArgoCD reconciles against. **CI never touches the cluster.** The boundary is enforced by design, not just documented.
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/aniket-devop/gitops-kubernetes-config/main/screenshots/architecture-diagram.png" width="90%" alt="GitOps architecture"/>
-</div>
-
-```
-Developer → gitops-ci-pipeline → GitHub Actions → pytest → Docker build
-   → Trivy CRITICAL scan → GHCR → Git commit to gitops-kubernetes-config
-   → ArgoCD → Kind Kubernetes
-```
-
-**Highlights**
-- 🔒 Trivy `CRITICAL` gate hard-fails the job before an image reaches GHCR
-- 🔒 Non-root container (`appuser`) on a minimal `python:3.12-alpine` base
-- 🔒 Two separately scoped credentials: `GITHUB_TOKEN` for GHCR, a distinct `GITOPS_REPO_TOKEN` for the cross-repo commit
-- 🔄 **Rollback is pure Git**: a `git revert` on the image-tag commit made ArgoCD's `selfHeal` restore the previous version. No `kubectl rollout undo`, no ArgoCD CLI
-
-<details>
-<summary><b>🔁 CI/CD flow · 📚 honest scope · 🚀 roadmap</b></summary>
-<br/>
-
-**CI/CD**
-On every push to `main`: checkout → `pytest` → tag image with short commit SHA → Docker build → Trivy scan (`severity: CRITICAL`) → push to GHCR → commit the new tag to `gitops-kubernetes-config`. ArgoCD (`automated`, `prune: true`, `selfHeal: true`) picks up the commit and reconciles the Kind cluster. GitHub Actions never runs `kubectl` or holds cluster credentials.
-
-**Useful commands**
-```bash
-kubectl scale deployment gitops-demo --replicas=5 -n gitops-demo-dev
-kubectl get pods -n gitops-demo-dev -w
-argocd app get gitops-demo-dev
-```
-
-**Honest scope**
-Runs on a local Kind cluster, so no production traffic, uptime, or scale claims. Only `dev` is fully automated; `staging` exists but needs manual sync with no promotion path yet.
-
-**Roadmap**
-- `dev` → `staging` promotion workflow
-- Move to a managed Kubernetes service (e.g. AKS) and registry (e.g. ACR)
-- Ingress + TLS, Horizontal Pod Autoscaler, NetworkPolicy/RBAC
-
-</details>
-
-<br/>
-
----
-
-## 3. Azure Network Foundation
-
-[![Repo](https://img.shields.io/badge/REPO-azure--network--foundation--terraform-181717?style=for-the-badge&logo=github)](https://github.com/aniket-devop/azure-network-foundation-terraform)
-
-![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)
-![Azure Firewall](https://img.shields.io/badge/Azure%20Firewall-0078D4?style=flat-square&logo=microsoftazure&logoColor=white)
-![Bastion](https://img.shields.io/badge/Bastion-0078D4?style=flat-square&logo=microsoftazure&logoColor=white)
-![Key Vault](https://img.shields.io/badge/Key%20Vault-0078D4?style=flat-square&logo=microsoftazure&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
-
-A Terraform-built Azure networking and security foundation: a hub VNet (Firewall + Bastion), a spoke VNet with a deny-by-default NSG and an AKS-designated subnet, egress forced through the Firewall via a route table, an RBAC-authorized Key Vault, and role assignments scoped to the resource group rather than the subscription. Deployable to `dev` and `prod` from one DRY Terraform configuration.
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/aniket-devop/azure-network-foundation-terraform/main/diagrams/architecture.png" width="90%" alt="Azure network foundation architecture"/>
-</div>
-
-**Highlights**
-- 🔐 RBAC scoped to the **resource group**, not the subscription, to limit blast radius
-- 🔐 Explicit `DenyAllInbound` NSG rule instead of relying on Azure's implicit defaults
-- 🔐 **Azure Bastion** instead of a jump box, so no VM carries a public IP
-- 🔐 Route table forces all AKS-subnet egress through the Firewall's private IP, so its allow-rules are actually enforced
-
-<details>
-<summary><b>⚙️ Decisions · 🔁 CI · 📚 honest scope · 🚀 roadmap</b></summary>
-<br/>
-
-**Decision:** Key Vault is secured via **RBAC + network ACL** (not a Private Endpoint), a deliberate, documented trade-off for this project's scope.
-
-**CI:** `terraform-ci.yml` runs `terraform fmt -check`, `terraform init -backend=false`, and `terraform validate` on every PR and push to `main`. No `plan`/`apply` automation or security scanning yet.
-
-```bash
-cd environments/dev
-terraform init
-terraform validate
-```
-
-**Honest scope:** Personal, sandbox-scale project. Not a Cloud Adoption Framework landing zone (no management groups, no Azure Policy, no multi-subscription governance), and no compute is deployed yet. `dev` and `prod` are `.tfvars`-differentiated instances of the same modules.
-
-**Roadmap**
-- Post `terraform plan` output as a PR comment before adding `apply` automation
-- Add `terraform test` coverage
-- Deploy an AKS cluster into the prepared `snet-aks` subnet
-
-</details>
-
-<br/>
-
----
-
-## 4. AWS Landing Network
-
-[![Repo](https://img.shields.io/badge/REPO-aws--terraform--landing--zone--project-181717?style=for-the-badge&logo=github)](https://github.com/aniket-devop/aws-terraform-landing-zone-project)
-
-![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)
-![AWS](https://img.shields.io/badge/VPC%20%2F%20EC2%20%2F%20ALB-232F3E?style=flat-square&logo=amazonaws&logoColor=white)
-![S3](https://img.shields.io/badge/S3%20%2B%20DynamoDB-569A31?style=flat-square&logo=amazons3&logoColor=white)
-
-A self-driven project applying the same private-compute networking pattern as the Azure project, this time in AWS: multi-AZ VPC, ALB-fronted EC2 in private subnets, and locked remote Terraform state. AWS is a secondary, personal-project skill alongside Azure as the primary professional cloud.
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/aniket-devop/aws-terraform-landing-zone-project/main/diagrams/architecture.png" width="90%" alt="AWS architecture"/>
-</div>
-
-**How it works:** one VPC (`10.0.0.0/16`) across two AZs, each with a public subnet (ALB + NAT Gateway) and a private subnet (EC2 + Security Group + IAM role). The Internet Gateway only reaches public subnets, EC2 security groups accept traffic only from the ALB, outbound-only access goes through the NAT Gateway, and Terraform state lives in S3 with DynamoDB locking.
-
-<details>
-<summary><b>🔁 CI · 🚀 roadmap</b></summary>
-<br/>
-
-**CI:** every PR runs `terraform fmt -check` → `terraform validate` → `terraform plan` via GitHub Actions before anything is applied.
-
-```bash
-terraform init
-terraform plan
-terraform apply
-```
-
-**Roadmap**
-- HTTPS listener on the ALB with an ACM certificate
-- Auto Scaling Group instead of a static EC2 instance
-- CloudWatch alarms and a basic monitoring dashboard
-
-</details>
-
-<br/>
-
----
-
-## 5. Airflow Observability Pipeline
-
-[![Repo](https://img.shields.io/badge/REPO-airflow--docker--grafana--monitoring-181717?style=for-the-badge&logo=github)](https://github.com/aniket-devop/airflow-docker-grafana-monitoring)
-
-![Airflow](https://img.shields.io/badge/Airflow-017CEE?style=flat-square&logo=apacheairflow&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker%20Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white)
-
-A containerized Apache Airflow deployment, delivered as a freelance client project and re-architected from Airflow's official CeleryExecutor/Redis template into a single-node **LocalExecutor + PostgreSQL** setup. Instrumented with a StatsD → Prometheus → Grafana metrics pipeline and orchestrated with a single `docker compose up`.
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/aniket-devop/airflow-docker-grafana-monitoring/main/assets/architecture-diagram.png" width="90%" alt="Airflow observability architecture"/>
-</div>
-
-**Monitoring flow:** Airflow emits StatsD metrics → StatsD Exporter republishes in Prometheus format → Prometheus scrapes every 15s → Grafana added as a data source.
-
-<details>
-<summary><b>⚙️ Decisions · 📚 honest scope · 🚀 roadmap</b></summary>
-<br/>
-
-**Components:** Airflow API Server, Scheduler (runs tasks directly via LocalExecutor), DAG Processor, Triggerer, PostgreSQL 16, StatsD Exporter, Prometheus, Grafana, all on one Docker Compose network.
-
-**Decisions**
-- Swapped CeleryExecutor + Redis for **LocalExecutor**, removing a message broker and worker fleet with no benefit at single-node scale, while keeping health checks, dependency ordering, and persistent metadata storage
-- Bridged metrics via **StatsD → Prometheus** since Airflow doesn't expose a native `/metrics` endpoint in this configuration
-
-**Honest scope:** a working single-node deployment with a verified metrics pipeline, not a distributed production platform. No Grafana dashboards or alerting are pre-provisioned, and Prometheus/Grafana have no persistent storage.
-
-```bash
-docker compose up -d
-docker compose ps
-curl http://localhost:8080  # Airflow UI
-```
-
-**Roadmap**
-- Ship a starter Grafana dashboard + Prometheus datasource provisioning
-- Add Alertmanager with basic failure-rate alerts
-- Pin third-party image versions currently tracking `:latest`
-
-</details>
-
-<br/>
-
----
-
-## 🤖 This Profile Maintains Itself
-
-The stats card above isn't a third-party widget. It's generated by a small **Node.js script** (`scripts/generate-stats.mjs`) that calls the GitHub API, and a **GitHub Actions workflow** (`.github/workflows/update-stats.yml`) re-runs it daily and commits the result. Same philosophy as everything else here: automated, reproducible, in code.
-
-<br/>
-
-## 📬 Let's Talk
-
-I'm **open to DevOps / Cloud Engineer roles**, full-time, Bengaluru or remote.
-
-If any of this is relevant to a role you're hiring for, or you just want to compare notes on Terraform module design, AKS networking, or GitOps patterns, reach out. I read every message.
-
 <div align="center">
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Message%20me-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/aniket484)
-[![Email](https://img.shields.io/badge/Email-Send%20a%20note-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:aniketkmr484@gmail.com)
-
-<br/>
-
-**If something here helped or impressed you, a ⭐ on the repos means a lot.**
-
-<sub>Thanks for visiting 💙</sub>
+*A local proof of concept. All observations are simulated and no real Azure or ServiceNow resources are accessed or modified.*
 
 </div>
