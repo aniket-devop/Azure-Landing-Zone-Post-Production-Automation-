@@ -53,3 +53,9 @@ No credentials or subscription IDs are stored in code. Real integrations would u
 Start `python mock_servicenow.py`, then `python demo_all_scenarios.py`.
 Each scenario runs through workflow + mock ServiceNow in three cases (awaiting, recovered, failed).
 Last run: 30 cases, 0 unexpected. Observations are simulated; remediation is dry-run.
+
+## Live dashboard
+
+Start `python mock_servicenow.py`, then `python dashboard.py` and open http://127.0.0.1:8080.
+Pick a scenario and instance, then trigger Alert / Recovered / Failed. Results and live mock-ServiceNow incidents are shown.
+Same scenario + instance reuses the open incident (dedup); Recovered resolves it. Simulated only, no automated test for the dashboard yet.
