@@ -1,0 +1,286 @@
+﻿<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IYAV Self-Healing Dashboard</title>
+<style>
+:root{--bg:#070a16;--ink:#e9eefb;--mute:#8d99b8;--line:rgba(255,255,255,.10);
+--blue:#4f8cff;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--violet:#8b5cf6;--cyan:#22d3ee}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Segoe UI,Inter,Arial,sans-serif;color:var(--ink);min-height:100vh;background:var(--bg);overflow-x:hidden;position:relative}
+.orb{position:fixed;border-radius:50%;filter:blur(70px);opacity:.55;z-index:0;pointer-events:none;animation:float 14s ease-in-out infinite}
+.o1{width:420px;height:420px;background:#2447c9;left:-120px;top:-100px}
+.o2{width:380px;height:380px;background:#7c3aed;right:-100px;top:60px;animation-delay:-4s}
+.o3{width:340px;height:340px;background:#0891b2;left:35%;bottom:-160px;animation-delay:-8s}
+@keyframes float{50%{transform:translate(40px,30px) scale(1.12)}}
+body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 20%,#000 30%,transparent 75%)}
+header,main,footer{position:relative;z-index:1}
+header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:20px 36px;border-bottom:1px solid var(--line);backdrop-filter:blur(10px);background:rgba(7,10,22,.45)}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-weight:900;letter-spacing:1px;
+background:linear-gradient(135deg,var(--blue),var(--violet));
+box-shadow:0 10px 26px rgba(79,140,255,.5),inset 0 2px 0 rgba(255,255,255,.35),inset 0 -4px 0 rgba(0,0,0,.25);transform:perspective(300px) rotateY(-14deg) rotateX(8deg)}
+.brand h1{margin:0;font-size:21px;letter-spacing:.3px}
+.brand p{margin:3px 0 0;font-size:12px;color:var(--mute)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:12px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--mute);display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mute)}
+.dot.on{background:var(--green);animation:pulse 1.8s infinite}
+.dot.off{background:var(--red)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.7)}70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+main{max-width:1320px;margin:0 auto;padding:26px 36px 30px;perspective:1400px}
+.tilt{transform-style:preserve-3d;transition:transform .18s ease-out,box-shadow .25s;will-change:transform}
+.glass{position:relative;background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
+border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(14px);
+box-shadow:0 18px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)}
+.glass:after{content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;
+background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.13),transparent 60%);opacity:var(--glare,0);transition:opacity .25s}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:20px}
+.kpi{padding:20px 22px;overflow:hidden}
+.kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c);box-shadow:0 0 18px var(--c)}
+.kpi .ic{position:absolute;right:18px;top:16px;font-size:30px;transform:translateZ(40px);filter:drop-shadow(0 8px 10px rgba(0,0,0,.5))}
+.kpi .n{font-size:42px;font-weight:800;line-height:1.05;transform:translateZ(30px);text-shadow:0 6px 18px rgba(0,0,0,.45)}
+.kpi .l{margin-top:6px;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--mute)}
+.card{padding:20px 22px;margin-bottom:20px}
+.card h2{margin:0 0 14px;font-size:13px;letter-spacing:1.2px;color:#cdd7f0}
+.row{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+@media(max-width:900px){.row,.grid2{grid-template-columns:1fr!important}}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+select,input{padding:12px 14px;font-size:14px;color:var(--ink);background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:12px;outline:none;box-shadow:inset 0 2px 6px rgba(0,0,0,.4)}
+select{min-width:290px}
+select option{color:#111}
+select:focus,input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,140,255,.25),inset 0 2px 6px rgba(0,0,0,.4)}
+button{padding:12px 20px;font-size:14px;font-weight:700;border:0;border-radius:12px;color:#fff;cursor:pointer;position:relative;
+transition:transform .1s,box-shadow .1s,filter .15s;box-shadow:0 6px 0 var(--edge),0 12px 22px rgba(0,0,0,.45);transform:translateY(0)}
+button:hover{filter:brightness(1.12)}
+button:active{transform:translateY(5px);box-shadow:0 1px 0 var(--edge),0 4px 10px rgba(0,0,0,.4)}
+button:disabled{opacity:.55;cursor:wait}
+.b1{background:linear-gradient(180deg,#5b9bff,#2563eb);--edge:#1b3f9a}
+.b2{background:linear-gradient(180deg,#34d97b,#15a34a);--edge:#0f6b31}
+.b3{background:linear-gradient(180deg,#f87171,#dc2626);--edge:#8f1a1a}
+.b4{background:linear-gradient(180deg,#a78bfa,#7c3aed);--edge:#4c1d95}
+.hint{margin-top:18px;font-size:12px;color:var(--mute);line-height:1.6}
+.donutwrap{display:flex;align-items:center;gap:20px}
+.donutwrap svg{filter:drop-shadow(0 10px 18px rgba(34,197,94,.35))}
+.legend{font-size:13px;line-height:2}
+.sw{display:inline-block;width:11px;height:11px;border-radius:4px;margin-right:9px}
+.pipe{display:flex;flex-wrap:wrap;align-items:center;gap:8px;perspective:900px;padding:6px 2px 14px}
+.step{flex:1 1 120px;min-width:120px;text-align:center;padding:16px 8px;border-radius:14px;
+background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1.5px solid var(--line);
+transform:rotateX(14deg) translateZ(0);transition:transform .45s,box-shadow .45s,border-color .45s,background .45s;
+box-shadow:0 10px 0 rgba(0,0,0,.35),0 16px 24px rgba(0,0,0,.4)}
+.step .t{font-size:13px;font-weight:700}
+.step .s{font-size:11px;color:var(--mute);margin-top:6px;min-height:14px;word-break:break-word}
+.step.done{border-color:var(--green);background:linear-gradient(160deg,rgba(34,197,94,.28),rgba(34,197,94,.06));transform:rotateX(0) translateZ(26px) translateY(-6px);box-shadow:0 10px 0 rgba(21,128,61,.55),0 0 28px rgba(34,197,94,.4)}
+.step.fail{border-color:var(--red);background:linear-gradient(160deg,rgba(239,68,68,.28),rgba(239,68,68,.06));transform:rotateX(0) translateZ(26px) translateY(-6px);box-shadow:0 10px 0 rgba(153,27,27,.55),0 0 28px rgba(239,68,68,.4)}
+.step.wait{border-color:var(--amber);background:linear-gradient(160deg,rgba(245,158,11,.28),rgba(245,158,11,.06));transform:rotateX(0) translateZ(26px) translateY(-6px);box-shadow:0 10px 0 rgba(146,92,6,.55),0 0 28px rgba(245,158,11,.4)}
+.arrow{color:var(--cyan);font-size:20px;text-shadow:0 0 10px var(--cyan)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.wrap{overflow:auto;max-height:420px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{position:sticky;top:0;background:#12182f;text-align:left;color:var(--mute);font-size:11px;text-transform:uppercase;letter-spacing:.7px;z-index:1}
+th,td{padding:10px 11px;border-bottom:1px solid var(--line)}
+tbody tr:hover{background:rgba(255,255,255,.04)}
+tr.fresh{animation:flash 1.4s}
+@keyframes flash{from{background:rgba(79,140,255,.4)}to{background:transparent}}
+.badge{display:inline-block;padding:3px 11px;border-radius:999px;font-size:11.5px;font-weight:700;border:1px solid transparent}
+.New{background:rgba(239,68,68,.16);color:#fca5a5;border-color:rgba(239,68,68,.35)}
+.Resolved{background:rgba(34,197,94,.16);color:#86efac;border-color:rgba(34,197,94,.35)}
+.verified{background:rgba(34,197,94,.16);color:#86efac;border-color:rgba(34,197,94,.35)}
+.failed{background:rgba(239,68,68,.16);color:#fca5a5;border-color:rgba(239,68,68,.35)}
+.awaiting{background:rgba(245,158,11,.16);color:#fcd34d;border-color:rgba(245,158,11,.35)}
+#toast{position:fixed;right:24px;bottom:24px;background:#7f1d1d;color:#fff;padding:13px 20px;border-radius:12px;display:none;font-size:14px;z-index:5;box-shadow:0 12px 28px rgba(0,0,0,.5)}
+footer{text-align:center;color:var(--mute);font-size:12px;padding:0 0 28px}
+@media(prefers-reduced-motion:reduce){.orb,.dot.on,tr.fresh{animation:none}.tilt,.step,button{transition:none}}
+</style></head><body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+<header>
+<div class="brand"><div class="logo">IY</div>
+<div><h1>IYAV Self-Healing Dashboard</h1><p>Monitor &rarr; Detect &rarr; Correlate &rarr; Diagnose &rarr; Remediate &rarr; Verify &rarr; ServiceNow</p></div></div>
+<div class="chips">
+<span class="chip"><span class="dot" id="conn"></span><span id="conntxt">checking ServiceNow...</span></span>
+<span class="chip">Dry-run remediation</span>
+<span class="chip">Simulated observations</span>
+</div>
+</header>
+<main>
+
+<div class="kpis">
+<div class="glass tilt kpi" style="--c:#4f8cff"><div class="ic">&#x1F4CB;</div><div class="n" id="k_total">0</div><div class="l">Total incidents</div></div>
+<div class="glass tilt kpi" style="--c:#ef4444"><div class="ic">&#x1F6A8;</div><div class="n" id="k_open">0</div><div class="l">Open</div></div>
+<div class="glass tilt kpi" style="--c:#22c55e"><div class="ic">&#x2705;</div><div class="n" id="k_res">0</div><div class="l">Resolved (recovery verified)</div></div>
+<div class="glass tilt kpi" style="--c:#f59e0b"><div class="ic">&#x1F501;</div><div class="n" id="k_dup">0</div><div class="l">Duplicate tickets avoided (session)</div></div>
+</div>
+
+<div class="row">
+<div class="glass tilt card">
+<h2>TRIGGER A SIMULATED ALERT</h2>
+<div class="controls">
+<select id="rule"></select>
+<input id="instance" value="vm-demo" size="14" title="resource instance name">
+<button class="b1" onclick="fire('awaiting')">Alert aaya</button>
+<button class="b2" onclick="fire('recovered')">Recovered</button>
+<button class="b3" onclick="fire('failed')">Failed</button>
+<button class="b4" id="auto" onclick="autoDemo()">&#9654; Run auto demo</button>
+</div>
+<div class="hint">Same scenario + instance twice = same open incident reused (dedup). Recovered resolves it. Auto demo runs all scenarios: alert, duplicate alert, recovery.</div>
+</div>
+<div class="glass tilt card">
+<h2>INCIDENT STATUS</h2>
+<div class="donutwrap">
+<svg width="130" height="130" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" stroke-width="13" opacity=".85"/>
+<circle id="arc" cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="13" stroke-dasharray="0 251.2" transform="rotate(-90 50 50)" style="transition:stroke-dasharray .7s"/>
+<text id="pct" x="50" y="56" text-anchor="middle" fill="#e9eefb" font-size="17" font-weight="800">0%</text>
+</svg>
+<div class="legend"><div><span class="sw" style="background:#22c55e"></span>Resolved</div><div><span class="sw" style="background:#ef4444"></span>Open</div></div>
+</div>
+</div>
+</div>
+
+<div class="glass card">
+<h2>PIPELINE (LAST RUN)</h2>
+<div class="pipe" id="pipe"></div>
+</div>
+
+<div class="grid2">
+<div class="glass card"><h2>WORKFLOW RESULTS (THIS SESSION)</h2>
+<div class="wrap"><table><thead><tr><th>Time</th><th>Scenario</th><th>Instance</th><th>Case</th><th>Status</th><th>Incident</th><th>State</th></tr></thead>
+<tbody id="results"></tbody></table></div></div>
+
+<div class="glass card"><h2>MOCK SERVICENOW INCIDENTS (LIVE, LATEST 15)</h2>
+<div class="wrap"><table><thead><tr><th>Number</th><th>State</th><th>Description</th></tr></thead>
+<tbody id="incidents"></tbody></table></div></div>
+</div>
+
+</main>
+<footer>IYAV POC &middot; local only &middot; no real Azure or ServiceNow connected</footer>
+<div id="toast"></div>
+
+<script>
+var STEPS=["Monitor","Detect","Correlate","Diagnose","Remediate","Verify","ServiceNow"];
+var seen={}; var dupes=0; var shown={};
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.style.display="block";setTimeout(function(){t.style.display="none";},4000);}
+function statusClass(s){if(s==="recovery_verified")return "verified";if(s==="recovery_failed")return "failed";return "awaiting";}
+
+function countTo(id,target){
+  var el=document.getElementById(id),from=shown[id]||0;
+  shown[id]=target;
+  if(from===target){el.textContent=target;return;}
+  var start=null;
+  function frame(ts){
+    if(start===null){start=ts;}
+    var p=Math.min((ts-start)/500,1);
+    el.textContent=Math.round(from+(target-from)*p);
+    if(p<1){requestAnimationFrame(frame);}
+  }
+  requestAnimationFrame(frame);
+}
+
+document.querySelectorAll(".tilt").forEach(function(el){
+  el.addEventListener("mousemove",function(e){
+    var r=el.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    el.style.transform="perspective(900px) rotateX("+((0.5-y)*8)+"deg) rotateY("+((x-0.5)*10)+"deg) translateZ(6px)";
+    el.style.setProperty("--mx",(x*100)+"%");el.style.setProperty("--my",(y*100)+"%");el.style.setProperty("--glare",1);
+  });
+  el.addEventListener("mouseleave",function(){
+    el.style.transform="";el.style.setProperty("--glare",0);
+  });
+});
+
+function drawPipe(cls,sub){
+  var html="";
+  for(var i=0;i<STEPS.length;i++){
+    html+="<div class='step "+(cls[i]||"")+"'><div class='t'>"+STEPS[i]+"</div><div class='s'>"+esc(sub[i]||"")+"</div></div>";
+    if(i<STEPS.length-1){html+="<div class='arrow'>&rsaquo;</div>";}
+  }
+  document.getElementById("pipe").innerHTML=html;
+}
+
+async function animatePipe(d){
+  var cls=[],sub=[];
+  var finalCls=["done","done","done","done","done","wait","done"];
+  var finalSub=["alert received","validated",d.incident_number,d.rule,d.remediation?d.remediation.action+" (dry-run)":"","",d.incident_state];
+  if(d.workflow_status==="recovery_verified"){finalCls[5]="done";finalSub[5]="recovery verified";}
+  else if(d.workflow_status==="recovery_failed"){finalCls[5]="fail";finalSub[5]="issue still present";}
+  else{finalCls[5]="wait";finalSub[5]="awaiting observation";}
+  drawPipe(cls,sub);
+  for(var i=0;i<STEPS.length;i++){
+    cls[i]=finalCls[i];sub[i]=finalSub[i];
+    drawPipe(cls,sub);
+    await sleep(120);
+  }
+}
+
+function setDonut(res,total){
+  var pct=total?Math.round(res*100/total):0;
+  document.getElementById("arc").setAttribute("stroke-dasharray",(251.2*pct/100)+" 251.2");
+  document.getElementById("pct").textContent=pct+"%";
+}
+
+async function loadScenarios(){
+  var r=await fetch("/api/scenarios"); var list=await r.json();
+  document.getElementById("rule").innerHTML=list.map(function(s){
+    return "<option value='"+esc(s.rule)+"'>"+esc(s.rule)+"  ["+esc(s.check)+"]</option>";}).join("");
+}
+
+async function fire(kind,rule,inst){
+  rule=rule||document.getElementById("rule").value;
+  inst=inst||document.getElementById("instance").value;
+  var d;
+  try{
+    var r=await fetch("/api/trigger",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({rule:rule,instance:inst,case:kind})});
+    d=await r.json();
+    if(!r.ok){toast(d.error||"request failed");return null;}
+  }catch(e){toast("dashboard lost connection");return null;}
+  if(seen[d.incident_number]){dupes++;}
+  seen[d.incident_number]=1;
+  countTo("k_dup",dupes);
+  var tr=document.createElement("tr");tr.className="fresh";
+  tr.innerHTML="<td>"+new Date().toLocaleTimeString()+"</td><td>"+esc(d.rule)+"</td><td>"+esc(d.instance)+"</td><td>"+esc(d.case)+"</td>"
+    +"<td><span class='badge "+statusClass(d.workflow_status)+"'>"+esc(d.workflow_status)+"</span></td><td>"+esc(d.incident_number)+"</td>"
+    +"<td><span class='badge "+esc(d.incident_state)+"'>"+esc(d.incident_state)+"</span></td>";
+  var tb=document.getElementById("results"); tb.insertBefore(tr,tb.firstChild);
+  loadIncidents();
+  await animatePipe(d);
+  return d;
+}
+
+async function autoDemo(){
+  var btn=document.getElementById("auto"); btn.disabled=true;
+  var rules=Array.prototype.map.call(document.getElementById("rule").options,function(o){return o.value;});
+  var tag="auto-"+(Date.now()%100000);
+  for(var i=0;i<rules.length;i++){
+    if(!await fire("awaiting",rules[i],tag)){break;}
+    await sleep(150);
+    await fire("awaiting",rules[i],tag);
+    await sleep(150);
+    await fire("recovered",rules[i],tag);
+    await sleep(200);
+  }
+  btn.disabled=false;
+}
+
+async function loadIncidents(){
+  var conn=document.getElementById("conn"),txt=document.getElementById("conntxt");
+  try{
+    var r=await fetch("/api/incidents"); var d=await r.json();
+    if(!r.ok){conn.className="dot off";txt.textContent="ServiceNow offline";return;}
+    conn.className="dot on";txt.textContent="Mock ServiceNow connected";
+    var res=0;
+    for(var i=0;i<d.length;i++){if(d[i].state==="Resolved"||d[i].state==="Closed"){res++;}}
+    countTo("k_total",d.length);countTo("k_res",res);countTo("k_open",d.length-res);
+    setDonut(res,d.length);
+    document.getElementById("incidents").innerHTML=d.slice(-15).reverse().map(function(i){
+      return "<tr><td>"+esc(i.number)+"</td><td><span class='badge "+esc(i.state)+"'>"+esc(i.state)+"</span></td><td>"+esc(i.short_description)+"</td></tr>";
+    }).join("");
+  }catch(e){conn.className="dot off";txt.textContent="dashboard lost connection";}
+}
+
+drawPipe([],[]); loadScenarios(); loadIncidents(); setInterval(loadIncidents,2000);
+</script></body></html>
