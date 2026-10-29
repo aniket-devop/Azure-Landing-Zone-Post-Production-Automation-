@@ -5,3 +5,6 @@ __pycache__/
 .env
 local.settings.json
 *.bak
+
+iyav-poc.zip
+dashboard_page.backup_*.html
